@@ -4,7 +4,7 @@ from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from pydantic import BaseModel
-from app.models.user import User
+from app.models import User
 from app.database.db import get_db  # Ensure this is the correct path to your DB session
 import hashlib  # For MD5 password verification
 

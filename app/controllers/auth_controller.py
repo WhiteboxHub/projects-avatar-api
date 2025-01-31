@@ -1,6 +1,6 @@
 import os
 from sqlalchemy.orm import Session
-from app.models.user import User
+from app.models import User
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 import hashlib

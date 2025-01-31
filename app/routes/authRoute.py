@@ -1,50 +1,36 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app.database.db import get_db
-from app.controllers.auth_controller import (
-    get_user_by_uname,  # Function to get user by username
-    verify_md5_hash,    # Function to verify passwords with MD5
-    create_access_token,  # Function to create JWT tokens
-)
-from app.schemas import UserLogin  # Ensure that the schema for UserLogin is correctly imported
+from jose import JWTError, jwt
+import os
+from datetime import datetime, timedelta
+from app.schemas import LoginRequest
+from sqlalchemy.sql import text
+
+# Load secret key from environment variables
+SECRET_KEY = os.getenv("SECRET_KEY", "your_default_secret_key")
 
 router = APIRouter()
 
+
 @router.post("/login")
-def login(user: UserLogin, db: Session = Depends(get_db)):
-    # Fetch the user from the database by username
-    db_user = get_user_by_uname(db, user.uname)
+def login(request: LoginRequest, db: Session = Depends(get_db)):
+    user = db.execute(text("SELECT * FROM whiteboxqa.authuser WHERE uname = :username"), {"username": request.username}).fetchone()
     
-    # Debugging: log the user fetched from the database
-    print(f"User fetched from DB: {db_user}")  # Log the user object
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
     
-    # Check if the user exists in the database
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or password"
-        )
-    
-    # Verify the password using MD5 hashing
-    if not verify_md5_hash(user.passwd, db_user.passwd):  # Using MD5 verification
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or password"
-        )
-    
-    # Debugging: log password verification result
-    print(f"Password verification successful: {verify_md5_hash(user.passwd, db_user.passwd)}")
-    
-    # Determine the message based on the user's team (Admin, Instructor, etc.)
-    if db_user.team == "admin":
-        message = "Welcome back admin"
-    elif db_user.team == "instructor":
-        message = "Welcome back instructor"
+    # Log the user object to inspect its structure
+    print("User details:", user._mapping)
+
+    # Generate token and message based on user role
+    token_data = {"id": user.id, "username": user.uname, "exp": datetime.utcnow() + timedelta(hours=1)}
+    token = jwt.encode(token_data, SECRET_KEY, algorithm="HS256")
+    print(token)
+
+    # Include token type along with the message
+    if user.team == 'admin':
+        return {"token": token, "token_type": "bearer", "message": "Welcome admin"}
     else:
-        message = "Welcome back user"
-    
-    # Generate JWT token
-    token = create_access_token(data={"id": db_user.id, "username": db_user.uname})
-    
-    # Return the token and the role-based message
-    return {"token": token, "message": message}
+        return {"token": token, "token_type": "bearer", "user_details": user._mapping, "message": "Welcome User"}
