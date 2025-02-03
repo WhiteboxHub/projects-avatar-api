@@ -6,7 +6,7 @@ from app.middleware.admin_validation import admin_validation
 from app.schemas import UserCreate, UserResponse
 from app.models import User
 
-router = APIRouter()
+router = APIRouter(prefix="/admin")
 
 @router.get("/users", dependencies=[Depends(admin_validation)])
 def get_users(

@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from app.models import Batch  # Assuming Batch is defined in your models.py
+from app.models import Batch  
 
 # Function to get all batches
 def get_batches(db: Session, search_query: str = "", skip: int = 0, limit: int = 100):

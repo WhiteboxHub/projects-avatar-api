@@ -13,7 +13,7 @@ Base.metadata.create_all(bind=engine)
 # Include routes with proper prefixes and tags
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(batch_router, prefix="/batch", tags=["batch"])
-app.include_router(user_router, prefix="/users", tags=["users"])
+app.include_router(user_router, prefix="/admin", tags=["users"])
 
 
 # Root endpoint
