@@ -65,7 +65,7 @@
 
 ### Get Batches
 ```http
-GET /batch/
+GET /batch/batches
 ```
 - Response Example:
 ```json
@@ -85,7 +85,7 @@ GET /batch/
 
 ### Insert New Batch
 ```http
-POST /batch/
+POST /batch/insert
 ```
 - Body:
 ```json
@@ -108,7 +108,7 @@ POST /batch/
 
 ### Delete a Batch
 ```http
-DELETE /batch/3
+DELETE /batch/delete/3
 ```
 - Response Example:
 ```json
