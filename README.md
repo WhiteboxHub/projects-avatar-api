@@ -1,8 +1,6 @@
 
 # Project Avatar API
 
-This is the backend for the **Project Avatar API**, built with **FastAPI** and connected to an existing **MySQL** database. The API allows for basic batch management (get, insert, and delete operations) and is intended to be tested with **Postman**.
-
 ## Requirements
 
 - Python 3.9 or higher
