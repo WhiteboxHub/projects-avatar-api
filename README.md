@@ -1,4 +1,3 @@
-
 # Project Avatar API
 
 ## Requirements
@@ -7,8 +6,11 @@
 - FastAPI
 - MySQL
 - Postman (for testing the API)
+- Docker (for containerization)
 
 ## Setup and Installation
+
+### Running Locally
 
 1. Clone this repository to your local machine:
    ```bash
@@ -30,17 +32,40 @@
 
 5. The app should now be running at `http://127.0.0.1:8000`.
 
+### Running with Docker
+
+1. Build the Docker image:
+   ```bash
+   docker build -t project-avatar-api .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 8000:8000 project-avatar-api
+   ```
+
+3. The app should now be accessible at `http://localhost:8000`.
+
+4. To stop the container, find the container ID and remove it:
+   ```bash
+   docker ps  # Lists running containers
+   docker stop <container_id>
+   ```
+
+5. To remove all unused images and containers:
+   ```bash
+   docker system prune -a
+   ```
+
 ## Testing the API with Postman
 
 1. **Get Batches:**
-
    - **Method**: `GET`
    - **Endpoint**: `/batch/batches`
    - **Description**: Fetches all the existing batches from the database.
    - **Response**: A list of batches.
 
 2. **Insert New Batch:**
-
    - **Method**: `POST`
    - **Endpoint**: `/batch/insert`
    - **Description**: Inserts a new batch into the database.
@@ -51,11 +76,9 @@
        "batch_code": "NB001"
      }
      ```
-
    - **Response**: Confirmation of the inserted batch.
 
 3. **Delete a Batch:**
-
    - **Method**: `DELETE`
    - **Endpoint**: `/batch/delete/{batch_id}`
    - **Description**: Deletes a batch with the specified `batch_id`.
@@ -120,3 +143,5 @@ DELETE /batch/delete/3
 ## Notes
 - Make sure to update the database connection details according to your setup.
 - This API is intended for basic batch operations and can be extended with additional routes as needed.
+- Using Docker ensures that the API runs in a consistent environment across different systems.
+
