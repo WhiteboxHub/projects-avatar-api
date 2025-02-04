@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Float, MetaData, Date
 from app.database.db import Base
 from pydantic import BaseModel
 from sqlalchemy.orm import declarative_base
@@ -39,48 +39,49 @@ class Batch(Base):
 
 
 class Candidate(Base):
-    __tablename__ = "candidates"
+    __tablename__ = 'candidate'
 
-    # Annotating as ClassVar for SQLAlchemy columns
-    id: ClassVar[Column] = Column(Integer, primary_key=True, index=True)
-    name: str = Column(String, index=True)
-    enrolleddate: Optional[Date] = Column(Date, nullable=True)
-    email: str = Column(String, index=True)
-    phone: Optional[str] = Column(String, nullable=True)
-    address: Optional[str] = Column(String, nullable=True)
-    city: Optional[str] = Column(String, nullable=True)
-    zip: Optional[str] = Column(String, nullable=True)
-    state: Optional[str] = Column(String, nullable=True)
-    country: Optional[str] = Column(String, nullable=True)
-    status: Optional[str] = Column(String, nullable=True)
-    course: Optional[str] = Column(String, nullable=True)
-    agreement: Optional[str] = Column(String, nullable=True)
-    promissory: Optional[str] = Column(String, nullable=True)
-    driverslicense: Optional[str] = Column(String, nullable=True)
-    workpermit: Optional[str] = Column(String, nullable=True)
-    batchname: Optional[str] = Column(String, nullable=True)
-    processflag: Optional[str] = Column(String, nullable=True)
-    defaultprocessflag: Optional[str] = Column(String, nullable=True)
+    candidateid = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    email = Column(String)
+    phone = Column(String)
+    course = Column(String)
+    batchname = Column(String)
+    enrolleddate = Column(DateTime)
+    status = Column(String)
+    diceflag = Column(Integer)
+    education = Column(String)
+    workstatus = Column(String)
+    dob = Column(DateTime)
+    portalid = Column(String)
+    agreement = Column(String)
+    driverslicense = Column(String)
+    workpermit = Column(String)
+    wpexpirationdate = Column(DateTime)
+    offerletterurl = Column(String)
+    ssnvalidated = Column(Integer)
+    address = Column(String)
+    city = Column(String)
+    state = Column(String)
+    country = Column(String)
+    zip = Column(String)
+    emergcontactname = Column(String)
+    emergcontactemail = Column(String)
+    emergcontactphone = Column(String)
+    emergcontactaddrs = Column(String)
+    guidelines = Column(String)
+    term = Column(String)
+    referralid = Column(String)
+    salary0 = Column(Float)
+    salary6 = Column(Float)
+    salary12 = Column(Float)
+    originalresume = Column(String)
+    notes = Column(String)
 
-    # Pydantic model annotations
-    id: Optional[int]
-    name: str
-    enrolleddate: Optional[Date]
-    email: str
-    phone: Optional[str]
-    address: Optional[str]
-    city: Optional[str]
-    zip: Optional[str]
-    state: Optional[str]
-    country: Optional[str]
-    status: Optional[str]
-    course: Optional[str]
-    agreement: Optional[str]
-    promissory: Optional[str]
-    driverslicense: Optional[str]
-    workpermit: Optional[str]
-    batchname: Optional[str]
-    processflag: Optional[str]
-    defaultprocessflag: Optional[str]
+# Placement model
+class Placement(Base):
+    __tablename__ = 'placement'
 
-
+    placementid = Column(Integer, primary_key=True, index=True)
+    candidateid = Column(Integer)
+    placementDate = Column(DateTime)
