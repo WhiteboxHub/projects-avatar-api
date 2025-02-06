@@ -1,36 +1,6 @@
-# from fastapi import APIRouter, Depends, HTTPException
-# from sqlalchemy.orm import Session
-# from typing import List
-# from app.models import Lead  # Import the Lead model from models.py
-# from app.schemas import LeadCreate, LeadInDB, LeadUpdate  # Import schemas from schemas.py
-# from app.database.db import get_db
-# # import crud  # Optionally, create a separate CRUD file to handle operations
 
-# router = APIRouter()
-
-# @router.get("/leads")
-# async def get_leads(page: int = 1, page_size: int = 100, search: str = "", db: Session = Depends(get_db)):
-#     # Implement the logic to retrieve leads with pagination and search
-#     # return crud.get_leads(db, page, page_size, search)
-#     return 'this is working'
-
-# @router.post("/leads/insert")
-# async def create_lead(lead: LeadCreate, db: Session = Depends(get_db)):
-#     # Insert a new lead
-#     return crud.create_lead(db, lead)
-
-# @router.put("/leads/update/{id}")
-# async def update_lead(id: int, lead: LeadUpdate, db: Session = Depends(get_db)):
-#     # Update an existing lead
-#     return crud.update_lead(db, id, lead)
-
-# @router.delete("/leads/delete/{id}")
-# async def delete_lead(id: int, db: Session = Depends(get_db)):
-#     # Delete a lead
-#     return crud.delete_lead(db, id)
-
-
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from typing import List
 from app.models import Lead  # Import the Lead model from models.py
@@ -67,7 +37,7 @@ async def update_lead(id: int, lead: LeadUpdate, db: Session = Depends(get_db)):
     for key, value in lead.dict().items():
         setattr(db_lead, key, value)
     db.commit()
-    db.refresh(db_lead)
+    db.refresh(db_lead) 
     return db_lead
 
 @router.delete("/leads/delete/{id}", response_model=LeadInDB)
@@ -78,4 +48,9 @@ async def delete_lead(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Lead not found")
     db.delete(db_lead)
     db.commit()
-    return db_lead 
+    return Response(status_code=status.HTTP_204_NO_CONTENT) 
+
+
+
+
+   

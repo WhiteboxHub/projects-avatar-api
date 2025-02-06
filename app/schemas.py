@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic_settings import BaseSettings
 
 
@@ -144,3 +144,10 @@ class LeadResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class LeadSearchResponse(BaseModel):  # Add this to avoid the AttributeError
+    totalRows: int
+    data: List[LeadBase]  # Assuming data is a list of leads
+
+    class Config:
+        orm_mode = True
