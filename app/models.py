@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text
 from app.database.db import Base
 from pydantic import BaseModel
 from sqlalchemy.orm import declarative_base
@@ -67,7 +67,7 @@ class Candidate(Base):
     name: str
     enrolleddate: Optional[Date]
     email: str
-    phone: Optional[str]
+    phone: str
     address: Optional[str]
     city: Optional[str]
     zip: Optional[str]
@@ -84,3 +84,25 @@ class Candidate(Base):
     defaultprocessflag: Optional[str]
 
 
+class Lead(Base):
+    __tablename__ = "leads"
+
+    leadid = Column(Integer, primary_key=True, index=True)  # Use 'leadid' instead of 'id'
+    name = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+    phone = Column(String)
+    sourcename = Column(String)
+    course = Column(String)
+    status = Column(String) 
+    secondaryemail = Column(String)
+    secondaryphone = Column(String)
+    address = Column(String)
+    spousename = Column(String)
+    spouseemail = Column(String)
+    spousephone = Column(String) 
+    spouseoccupationinfo = Column(String) 
+    city = Column(String)
+    state = Column(String)
+    country = Column(String)
+    # Add other columns as per your database schema
+  

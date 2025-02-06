@@ -3,6 +3,7 @@ from app.database.db import engine, Base
 from app.routes.batchRoute import router as batch_router
 from app.routes.authRoute import router as auth_router
 from app.routes.accessRoute import router as user_router
+from app.routes.leadsRoute import router as leads_router
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -14,6 +15,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(batch_router, prefix="/batch", tags=["batch"])
 app.include_router(user_router, prefix="/admin", tags=["users"])
+app.include_router(leads_router, prefix="/leads", tags=["leads"])
 
 
 # Root endpoint

@@ -41,3 +41,106 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True 
+
+
+
+class LeadBase(BaseModel):
+    name: str
+    email: str
+    phone: Optional[str] = None
+
+class LeadCreate(LeadBase):
+    pass
+
+class LeadUpdate(LeadBase):
+    pass
+
+class LeadResponse(LeadBase):
+    leadid: int
+
+    class Config:
+        orm_mode = True
+
+
+class LeadBase(BaseModel):
+    name: str
+    phone: str
+    email: str
+    sourcename: Optional[str] = None
+    course: Optional[str] = None
+    status: Optional[str] = None
+    secondaryemail: Optional[str] = None
+    secondaryphone: Optional[str] = None
+    address: Optional[str] = None
+    spousename: Optional[str] = None
+    spouseemail: Optional[str] = None
+    spousephone: Optional[str] = None
+    spouseoccupationinfo: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+
+class LeadCreate(LeadBase):
+    pass
+
+class LeadUpdate(LeadBase):
+    pass
+
+class LeadInDB(LeadBase):
+    id: int
+
+    class Config:
+        orm_mode = True  # This allows FastAPI to work with SQLAlchemy models directly.
+
+class LeadInDB(BaseModel):
+    leadid: int  # Use 'leadid' instead of 'id'
+    name: str
+    email: str
+    phone: str
+    sourcename: str
+    course: str
+    status: str
+    secondaryemail: str
+    secondaryphone: str
+    address: str
+    spousename: str
+    spouseemail: str
+    spousephone: str
+    spouseoccupationinfo: str
+    city: str
+    state: str
+    country: str
+    class Config:
+        from_attributes = True
+
+class LeadCreate(BaseModel):
+    name: str
+    email: str
+    secondaryemail: Optional[str] = None
+    secondaryphone: Optional[str] = None
+    address: Optional[str] = None
+    spousename: Optional[str] = None
+    spouseemail: Optional[str] = None
+    spousephone: Optional[str] = None
+    spouseoccupationinfo: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+
+class LeadResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    secondaryemail: Optional[str] = None
+    secondaryphone: Optional[str] = None
+    address: Optional[str] = None
+    spousename: Optional[str] = None
+    spouseemail: Optional[str] = None
+    spousephone: Optional[str] = None
+    spouseoccupationinfo: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+
+    class Config:
+        from_attributes = True
