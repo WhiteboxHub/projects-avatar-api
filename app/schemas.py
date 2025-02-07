@@ -80,17 +80,17 @@ class LeadBase(BaseModel):
     state: Optional[str] = None
     country: Optional[str] = None
 
-class LeadCreate(LeadBase):
-    pass
+# class LeadCreate(LeadBase):
+#     pass
 
-class LeadUpdate(LeadBase):
-    pass
+# class LeadUpdate(LeadBase):
+#     pass
 
-class LeadInDB(LeadBase):
-    id: int
+# class LeadInDB(LeadBase):
+#     id: int
 
-    class Config:
-        orm_mode = True  # This allows FastAPI to work with SQLAlchemy models directly.
+#     class Config:
+#         orm_mode = True  # This allows FastAPI to work with SQLAlchemy models directly.
 
 class LeadInDB(BaseModel):
     leadid: int  # Use 'leadid' instead of 'id'

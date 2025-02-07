@@ -3,8 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from typing import List
-from app.models import Lead  # Import the Lead model from models.py
-from app.schemas import LeadCreate, LeadInDB, LeadUpdate  # Import schemas from schemas.py
+from app.controllers.leads_controller import get_leads, insert_lead, update_lead, delete_lead
+from app.models import Lead  
+from app.schemas import LeadCreate, LeadInDB, LeadUpdate  
 from app.database.db import get_db
 
 router = APIRouter()
