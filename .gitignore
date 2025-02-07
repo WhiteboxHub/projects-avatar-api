@@ -1,4 +1,8 @@
 .env
-__pycache__/
+*/__pycache__/
 *.py[cod]
 /Myvenv
+
+__pycache__/
+*.py[cod]
+*.pyc
