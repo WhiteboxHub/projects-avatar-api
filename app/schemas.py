@@ -44,6 +44,7 @@ class UserResponse(BaseModel):
 
 
 
+
 class LeadBase(BaseModel):
     name: str
     email: str
@@ -182,6 +183,7 @@ class UserResponse(BaseModel):
         orm_mode = True 
 
 
+
 class CandidateBase(BaseModel):
     name: Optional[str]
     email: Optional[str]
@@ -224,6 +226,7 @@ class CandidateBase(BaseModel):
 
 
 
+
 class BatchCreate(BaseModel):
     batchname: constr(max_length=100)
     current: constr(min_length=1, max_length=1)  # Accepts 'Y' or 'N'
@@ -256,3 +259,4 @@ class BatchCreate(BaseModel):
 
     class Config:
         from_attributes = True
+

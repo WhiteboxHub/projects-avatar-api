@@ -102,6 +102,15 @@ class Candidate(Base):
     notes = Column(String)
 
 
+# Placement model
+class Placement(Base):
+    __tablename__ = 'placement'
+
+    placementid = Column(Integer, primary_key=True, index=True)
+    candidateid = Column(Integer)
+    placementDate = Column(DateTime)
+
+
 
 class Lead(Base):
     __tablename__ = "leads"
