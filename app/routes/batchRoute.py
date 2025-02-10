@@ -13,6 +13,18 @@ def get_batch_list(search_query: str = "", page: int = 1, page_size: int = 200, 
     batches = get_batches(db=db, search_query=search_query, skip=skip, limit=page_size)
     return {"data": batches, "totalRows": len(batches)}
 
+@router.get("/batches/search")
+def search_batches(
+    search: str = "", 
+    page: int = 1, 
+    pageSize: int = 200, 
+    db: Session = Depends(get_db)
+):
+    skip = (page - 1) * pageSize
+    batches = get_batches(db=db, search_query=search, skip=skip, limit=pageSize)
+    return {"data": batches, "totalRows": len(batches)}
+
+
 # Route to get batch names sorted by date
 @router.get("/batchnames")
 def get_batch_names(db: Session = Depends(get_db)):
