@@ -106,6 +106,7 @@ class Candidate(Base):
 class Placement(Base):
     __tablename__ = 'placement'
 
+
     placementid = Column(Integer, primary_key=True, index=True)
     candidateid = Column(Integer)
     placementDate = Column(DateTime)
@@ -134,10 +135,7 @@ class Lead(Base):
     country = Column(String)
     # Add other columns as per your database schema
 
-    
-# Placement model
-class Placement(Base):
-    __tablename__ = 'placement'
-    placementid = Column(Integer, primary_key=True, index=True)
-    candidateid = Column(Integer)
-    placementDate = Column(DateTime)
+
+
+
+

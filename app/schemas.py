@@ -44,7 +44,6 @@ class UserResponse(BaseModel):
 
 
 
-
 class LeadBase(BaseModel):
     name: str
     email: str
@@ -184,6 +183,7 @@ class UserResponse(BaseModel):
 
 
 
+
 class CandidateBase(BaseModel):
     name: Optional[str]
     email: Optional[str]
@@ -242,21 +242,8 @@ class BatchCreate(BaseModel):
     topicsnotcovered: Optional[str] = None
     courseid: Optional[int] = None
 
-    # batchname: str
-    # courseid: str
-    # current: str
-    # enddate: str
-    # exams: int
-    # instructor1: str
-    # instructor2: Optional[str] = None  # Optional field
-    # instructor3: Optional[str] = None  # Optional field
-    # lastmoddatetime: str
-    # orientationdate: str
-    # startdate: str
-    # subject: str
-    # topicscovered: str
-    # topicsnotcovered: str
+ 
 
     class Config:
         from_attributes = True
-
+        orm_mode = True
