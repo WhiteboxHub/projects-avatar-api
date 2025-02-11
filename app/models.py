@@ -78,6 +78,7 @@ class Candidate(Base):
     originalresume = Column(String)
     notes = Column(String)
 
+
 # Placement model
 class Placement(Base):
     __tablename__ = 'placement'
