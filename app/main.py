@@ -4,6 +4,7 @@ from app.database.db import engine, Base
 from app.routes.batchRoute import router as batch_router
 from app.routes.authRoute import router as auth_router
 from app.routes.accessRoute import router as user_router
+
 from app.routes.leadsRoute import router as leads_router
 from app.routes.candidateRoute import router as candidate_router
 
