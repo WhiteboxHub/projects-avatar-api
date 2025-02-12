@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import declarative_base
 from typing import ClassVar, Optional
 from pydantic_settings import BaseSettings
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -135,9 +136,51 @@ class Lead(Base):
     # Add other columns as per your database schema
 
     
-# Placement model
-class Placement(Base):
-    __tablename__ = 'placement'
-    placementid = Column(Integer, primary_key=True, index=True)
-    candidateid = Column(Integer)
-    placementDate = Column(DateTime)
+# # Placement model
+# class Placement(Base):
+#     __tablename__ = 'placement'
+#     placementid = Column(Integer, primary_key=True, index=True)
+#     candidateid = Column(Integer)
+#     placementDate = Column(DateTime)
+
+
+
+
+class Employee(Base):
+    __tablename__ = "employee"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    phone = Column(String(20), nullable=True)
+    status = Column(String(50), nullable=True)
+    startdate = Column(Date, nullable=True)
+    mgrid = Column(Integer, ForeignKey("employee.id"), nullable=True)
+    designationid = Column(Integer, nullable=True)
+    personalemail = Column(String(255), nullable=True)
+    personalphone = Column(String(20), nullable=True)
+    dob = Column(Date, nullable=True)
+    address = Column(Text, nullable=True)
+    city = Column(String(100), nullable=True)
+    state = Column(String(100), nullable=True)
+    country = Column(String(100), nullable=True)
+    zip = Column(String(20), nullable=True)
+    skypeid = Column(String(50), nullable=True)
+    salary = Column(Float, nullable=True)
+    commission = Column(Float, nullable=True)  # Ensure no invalid string values are stored
+    commissionrate = Column(Float, nullable=True)
+    type = Column(String(50), nullable=True)
+    empagreementurl = Column(String(255), nullable=True)
+    offerletterurl = Column(String(255), nullable=True)
+    dlurl = Column(String(255), nullable=True)
+    workpermiturl = Column(String(255), nullable=True)
+    contracturl = Column(String(255), nullable=True)
+    enddate = Column(Date, nullable=True)
+    loginid = Column(Integer, nullable=True)  # Fix: Changed from String to Integer
+    responsibilities = Column(Text, nullable=True)
+    notes = Column(Text, nullable=True)
+
+    # Relationship to manage reporting manager (self-reference)
+    manager = relationship("Employee", remote_side=[id], backref="employees")
+    
+

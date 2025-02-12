@@ -2,6 +2,7 @@ from pydantic import BaseModel,constr, conint
 from datetime import datetime, date
 from typing import Optional, List
 from pydantic_settings import BaseSettings
+from pydantic import BaseModel, Field, field_validator
 
 
 class UserCreate(BaseModel):
@@ -259,4 +260,84 @@ class BatchCreate(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+
+
+class EmployeeBase(BaseModel):
+    name: str
+    email: str
+    phone: Optional[str] = None
+    status: Optional[str] = None
+    startdate: Optional[date] = None
+    mgrid: Optional[int] = None
+    designationid: Optional[int] = None
+    personalemail: Optional[str] = None
+    personalphone: Optional[str] = None
+    dob: Optional[date] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    zip: Optional[str] = None
+    skypeid: Optional[str] = None
+    salary: Optional[float] = None
+    commission: Optional[float] = None
+    commissionrate: Optional[float] = None
+    type: Optional[str] = None
+    empagreementurl: Optional[str] = None
+    offerletterurl: Optional[str] = None
+    dlurl: Optional[str] = None
+    workpermiturl: Optional[str] = None
+    contracturl: Optional[str] = None
+    enddate: Optional[date] = None
+    loginid: Optional[int] = None
+    responsibilities: Optional[str] = None
+    notes: Optional[str] = None
+
+    # Fix commission parsing issue
+    @field_validator("commission", "commissionrate", mode="before")
+    def validate_commission(cls, value):
+        if isinstance(value, (int, float)):
+            return float(value)
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return None  # Return None if parsing fails
+
+    # Fix enddate issue with "0000-00-00"
+    @field_validator("enddate", mode="before")
+    def validate_enddate(cls, value):
+        if value in ["0000-00-00", None, ""]:
+            return None
+        return value
+
+    # Fix dob issue with "0000-00-00"
+    @field_validator("dob", mode="before")
+    def validate_dob(cls, value):
+        if value in ["0000-00-00", None, ""]:
+            return None
+        return value
+
+    class Config:
+        from_attributes = True  # Replace `orm_mode = True` in Pydantic V2
+
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+class EmployeeCreate(EmployeeBase):
+    pass
+
+
+class EmployeeUpdate(EmployeeBase):
+    pass
+
+
+class EmployeeInDB(EmployeeBase):
+    id: int
+
+    class Config:
+        from_attributes = True  # Replace `orm_mode = True` in Pydantic V2
+
 
