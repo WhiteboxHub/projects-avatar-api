@@ -5,7 +5,7 @@ from app.routes.batchRoute import router as batch_router
 from app.routes.authRoute import router as auth_router
 from app.routes.accessRoute import router as user_router
 from app.routes.leadsRoute import router as leads_router
-from app.routes.candidatesRoute import router as candidates_router
+from app.routes.candidateRoute import router as candidate_router
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -26,7 +26,7 @@ app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(batch_router, prefix="", tags=["batch"])
 app.include_router(user_router, prefix="/admin", tags=["users"])
 app.include_router(leads_router, prefix="", tags=["leads"])
-app.include_router(candidates_router, prefix="", tags=["candidates"])
+app.include_router(candidate_router, prefix="", tags=["candidates"])
 
 
 
