@@ -1,11 +1,21 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float, MetaData, Date
+from sqlalchemy import Column, Integer, String, DateTime, Float, MetaData, Date, Boolean, Text, ForeignKey, DECIMAL
+
 from app.database.db import Base
-from pydantic import BaseModel
-from sqlalchemy.orm import declarative_base
+from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import declarative_base, relationship
 from typing import ClassVar, Optional
 from pydantic_settings import BaseSettings
+from datetime import datetime, date
+from sqlalchemy.orm import DeclarativeBase
+
 
 Base = declarative_base()
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    uname = Column(String, unique=True, index=True)
+    password = Column(String)
 
 class User(BaseModel):
     __tablename__ = "authuser"  # Ensure this matches your table name
@@ -23,19 +33,6 @@ class User(BaseModel):
     passwd: str
     team: str
     email: str
-
-
-# class Batch(Base):
-#     __tablename__ = "batch"
-
-#     batchid: int = Column(Integer, primary_key=True, index=True)
-#     batchname: str = Column(String, index=True)
-#     courseid: str = Column(String)
-#     startdate: Optional[Date] = Column(Date, nullable=True)
-#     enddate: Optional[Date] = Column(Date, nullable=True)
-
-#     def __repr__(self):
-#         return f"<Batch(batchid={self.batchid}, batchname={self.batchname}, courseid={self.courseid})>"
 
 from sqlalchemy import Column, Integer, String, Date, Text, TIMESTAMP, CHAR, ForeignKey
 
