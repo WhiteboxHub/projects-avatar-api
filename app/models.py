@@ -99,7 +99,6 @@ class Candidate(Base):
     notes = Column(String)
 
 
-# Placement model
 class Placement(Base):
     __tablename__ = 'placement'
 
@@ -107,7 +106,6 @@ class Placement(Base):
     placementid = Column(Integer, primary_key=True, index=True)
     candidateid = Column(Integer)
     placementDate = Column(DateTime)
-
 
 
 class Lead(Base):
@@ -130,16 +128,15 @@ class Lead(Base):
     city = Column(String)
     state = Column(String)
     country = Column(String)
-    # Add other columns as per your database schema
 
 
 
 
 class CandidateSearch(Base):    
-    __tablename__ = "candidate"  # Use the existing candidate table
+    __tablename__ = "candidate"
     
-    # Add extend_existing=True to avoid conflicts
-    __table_args__ = {'extend_existing': True}  # This will allow extending the existing table
+   
+    __table_args__ = {'extend_existing': True} 
     
     candidateid = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=True)

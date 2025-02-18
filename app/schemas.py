@@ -233,10 +233,6 @@ class CandidateResponse(CandidateBase):
     class Config:
         orm_mode = True
 
-
-
-
-
 class BatchCreate(BaseModel):
     batchname: constr(max_length=100)
     current: constr(min_length=1, max_length=1)  # Accepts 'Y' or 'N'
@@ -252,13 +248,10 @@ class BatchCreate(BaseModel):
     topicsnotcovered: Optional[str] = None
     courseid: Optional[int] = None
 
- 
 
     class Config:
         from_attributes = True
         orm_mode = True
-
-
 
 class CandidateSchema(BaseModel):
     candidateid: int
@@ -271,13 +264,11 @@ class CandidateSchema(BaseModel):
     workstatus: Optional[str]
     education: Optional[str]
     workexperience: Optional[str]
-    # Add other fields as needed
     
     class Config:
-        orm_mode = True  # Tells Pydantic to treat SQLAlchemy models as dicts
-
+        orm_mode = True 
 class CandidateSearchBase(BaseModel):
-    name: Optional[str]  # Only search by name
+    name: Optional[str] 
 
     class Config:
         orm_mode = True
