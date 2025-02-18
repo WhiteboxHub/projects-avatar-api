@@ -257,3 +257,27 @@ class BatchCreate(BaseModel):
     class Config:
         from_attributes = True
         orm_mode = True
+
+
+
+class CandidateSchema(BaseModel):
+    candidateid: int
+    name: str
+    enrolleddate: Optional[date]
+    email: Optional[str]
+    course: str
+    phone: Optional[str]
+    status: Optional[str]
+    workstatus: Optional[str]
+    education: Optional[str]
+    workexperience: Optional[str]
+    # Add other fields as needed
+    
+    class Config:
+        orm_mode = True  # Tells Pydantic to treat SQLAlchemy models as dicts
+
+class CandidateSearchBase(BaseModel):
+    name: Optional[str]  # Only search by name
+
+    class Config:
+        orm_mode = True

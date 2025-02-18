@@ -1,35 +1,32 @@
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker,DeclarativeBase
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 # Load environment variables from .env file
 load_dotenv()
 
-# MySQL connection details from .env
+# Database credentials from .env
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
 
-# Construct the DATABASE_URL
+# Construct the DATABASE_URL for MySQL
 DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 
-# SQLAlchemy setup
+# Initialize SQLAlchemy Engine & Session
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
 
-
+# Base class for ORM models
 class Base(DeclarativeBase):
     pass
 
-# Dependency to get DB session
+# Dependency function to provide a DB session
 def get_db():
     db = SessionLocal()
     try:
-        yield db
+        yield db  # This keeps the session open during request handling
     finally:
-        db.close()
+        db.close()  # Closes the session after request completes
