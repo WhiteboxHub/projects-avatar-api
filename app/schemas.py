@@ -182,6 +182,8 @@ class UserResponse(BaseModel):
         orm_mode = True 
 
 
+
+
 class CandidateBase(BaseModel):
     name: str
     email: EmailStr
