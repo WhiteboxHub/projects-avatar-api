@@ -13,15 +13,14 @@ class LoginRequest(BaseModel):
     password: str
 
 class Token(BaseModel):
-    access_token: str  # JWT token
-    token_type: str  # The type of token (usually "bearer")
-
-
+    access_token: str  
+    token_type: str  
+    
 class Batch(BaseModel):
     batchname: str
     courseid: str
-    created_at: Optional[datetime]  # If applicable
-    updated_at: Optional[datetime]  # If applicable
+    created_at: Optional[datetime]  
+    updated_at: Optional[datetime]  
 
     class Config:
         from_attributes = True  
@@ -82,7 +81,7 @@ class LeadBase(BaseModel):
 
 
 class LeadInDB(BaseModel):
-    leadid: int  # Use 'leadid' instead of 'id'
+    leadid: int 
     name: str
     email: str
     phone: str
@@ -134,10 +133,8 @@ class LeadResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class LeadSearchResponse(BaseModel):  # Add this to avoid the AttributeError
-    totalRows: int
-    data: List[LeadBase]  # Assuming data is a list of leads
-
+class LeadSearchResponse(BaseModel): 
+    data: List[LeadBase]  
     class Config:
         orm_mode = True
 
@@ -152,16 +149,14 @@ class LoginRequest(BaseModel):
     password: str
 
 class Token(BaseModel):
-    access_token: str  # JWT token
-    token_type: str  # The type of token (usually "bearer")
-
+    access_token: str  
+    token_type: str  
 
 class Batch(BaseModel):
     batchname: str
     courseid: str
-    created_at: Optional[datetime]  # If applicable
-    updated_at: Optional[datetime]  # If applicable
-
+    created_at: Optional[datetime]  
+    updated_at: Optional[datetime]  
     class Config:
         from_attributes = True  
 
@@ -235,7 +230,7 @@ class CandidateResponse(CandidateBase):
 
 class BatchCreate(BaseModel):
     batchname: constr(max_length=100)
-    current: constr(min_length=1, max_length=1)  # Accepts 'Y' or 'N'
+    current: constr(min_length=1, max_length=1)  
     orientationdate: Optional[date] = None
     subject: constr(max_length=45)
     startdate: date

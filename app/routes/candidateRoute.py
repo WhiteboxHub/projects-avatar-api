@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List
-from app.models import Candidate  # Ensure Candidate model has __tablename__ = "candidate"
+from app.models import Candidate  
 from app.schemas import CandidateResponse, CandidateCreate, CandidateUpdate
 from app.database.db import get_db
 from app.middleware.admin_validation import admin_validation

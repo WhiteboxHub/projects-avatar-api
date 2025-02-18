@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float, MetaData, Date, Boolean, Text, ForeignKey, DECIMAL
-
 from app.database.db import Base
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import declarative_base, relationship
@@ -18,16 +17,16 @@ class User(Base):
     password = Column(String)
 
 class User(BaseModel):
-    __tablename__ = "authuser"  # Ensure this matches your table name
+    __tablename__ = "authuser" 
 
-    # Annotating as ClassVar for SQLAlchemy columns
+   
     id: ClassVar[Column] = Column(Integer, primary_key=True, index=True)
     uname: str = Column(String, unique=True, index=True)
     passwd: str = Column(String)  
     team: str = Column(String)
     email: str = Column(String, unique=True, index=True)
 
-    # Pydantic model annotations
+
     id: Optional[int]
     uname: str
     passwd: str
@@ -42,7 +41,7 @@ class Batch(Base):
     
     batchid = Column(Integer, primary_key=True, autoincrement=True)
     batchname = Column(String(100), nullable=False)
-    current = Column(CHAR(1), nullable=False)  # <- Check if this line is missing!
+    current = Column(CHAR(1), nullable=False)  
     orientationdate = Column(Date)
     subject = Column(String(45))
     startdate = Column(Date)
@@ -111,7 +110,7 @@ class Placement(Base):
 class Lead(Base):
     __tablename__ = "leads"
 
-    leadid = Column(Integer, primary_key=True, index=True)  # Use 'leadid' instead of 'id'
+    leadid = Column(Integer, primary_key=True, index=True)  
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     phone = Column(String)
@@ -134,8 +133,6 @@ class Lead(Base):
 
 class CandidateSearch(Base):    
     __tablename__ = "candidate"
-    
-   
     __table_args__ = {'extend_existing': True} 
     
     candidateid = Column(Integer, primary_key=True, autoincrement=True)

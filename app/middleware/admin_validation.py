@@ -1,12 +1,12 @@
 from fastapi import Depends, HTTPException, Request
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
-from app.database.db import get_db  # Function to get the DB session
+from app.database.db import get_db  
 from app.config import settings
-from app.models import User,Candidate  # ORM model for authuser
+from app.models import User,Candidate  
 
 SECRET_KEY = settings.SECRET_KEY
-ALGORITHM = "HS256"  # Token signing algorithm
+ALGORITHM = "HS256"  
 
 
 def admin_validation(request: Request, db: Session = Depends(get_db)):
