@@ -8,14 +8,17 @@ from app.middleware.admin_validation import admin_validation
 
 router = APIRouter()
 
-@router.get("/candidates", response_model=dict)
+
+@router.get("/candidates", response_model=dict)  # No need for response_model
 def get_candidates(
     page: int = Query(1, alias="page"),
     pageSize: int = Query(100, alias="pageSize"),
     search: str = Query(None, alias="search"),
     db: Session = Depends(get_db),
-    _: bool = Depends(admin_validation)
+    _: bool = Depends(admin_validation)  # Admin validation
 ):
+    # print(f"{page}, {pageSize}, {search} -----------------------------------------------")
+
     offset = (page - 1) * pageSize
     query = db.query(Candidate)
     
@@ -24,19 +27,44 @@ def get_candidates(
 
     totalRows = query.count()
     candidates = query.order_by(Candidate.candidateid.desc()).offset(offset).limit(pageSize).all()
+
+    # Converting  list of Candidate objects into a list of dictionaries
+    candidates_list = [
+        {
+            "candidateid": c.candidateid,
+            "name": c.name,
+            "email": c.email,
+            "phone": c.phone,
+            "course": c.course,
+            "batchname": c.batchname,
+            "status": c.status,
+            "workstatus": c.workstatus,
+            "education": c.education,
+            "linkedin": c.linkedin,
+            "notes": c.notes,
+        }
+        for c in candidates
+    ]
+
+    return {"data": candidates_list, "totalRows": totalRows}
     
-    return {"data": candidates, "totalRows": totalRows}
 
 @router.post("/candidates/insert", response_model=CandidateResponse)
 def insert_candidate(
-    candidate: CandidateCreate,
-    db: Session = Depends(get_db)
+    candidate_create: CandidateCreate,
+    db: Session = Depends(get_db),
+    _: bool = Depends(admin_validation)
 ):
-    new_candidate = Candidate(**candidate.dict())
+    # Create new candidate and insert into database
+    new_candidate = Candidate(**candidate_create.dict())
     db.add(new_candidate)
     db.commit()
     db.refresh(new_candidate)
     return new_candidate
+
+
+
+
 
 @router.put("/candidates/update/{id}", response_model=CandidateResponse)
 def update_candidate(

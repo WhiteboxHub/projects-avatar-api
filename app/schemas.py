@@ -250,4 +250,4 @@ class BatchCreate(BaseModel):
     courseid: Optional[int] = None
 
     class Config:
-        from_attributes = True
+        orm_mode = True

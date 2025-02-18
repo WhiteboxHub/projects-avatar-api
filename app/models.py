@@ -81,15 +81,15 @@ class Lead(Base):
     country = Column(String)
     # Add other columns as per your database schema
 
-class Candidate(Base):
-    __tablename__ = "candidates"
+# class Candidate(Base):
+#     __tablename__ = "candidates"
 
-    id = Column(Integer, primary_key=True, index=True)
-    batchid = Column(Integer, nullable=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True)
-    phone = Column(String)
-    diceflag = Column(Boolean, nullable=True)
+#     id = Column(Integer, primary_key=True, index=True)
+#     batchid = Column(Integer, nullable=True)
+#     name = Column(String, nullable=False)
+#     email = Column(String, unique=True, index=True)
+#     phone = Column(String)
+#     diceflag = Column(Boolean, nullable=True)
 
 class Candidate(Base):
     __tablename__ = "candidate"  # Explicitly match MySQL table name
