@@ -5,8 +5,8 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 import hashlib
 
-# JWT Secret Key and Algorithm
-SECRET_KEY = os.getenv('SECRET_KEY')  # Ensure this key is securely set in the environment
+
+SECRET_KEY = os.getenv('SECRET_KEY')  
 ALGORITHM = "HS256"
 
 def get_user_by_uname(db: Session, username: str):
@@ -28,11 +28,11 @@ def create_access_token(data: dict, expires_delta: timedelta = timedelta(hours=1
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-# Example of how you might hash a password when creating a new user (if needed):
+
 def create_user(db: Session, username: str, password: str):
     """Create a new user with MD5 hashed password."""
-    hashed_password = md5_hash(password)  # Hash the password with MD5
-    new_user = User(uname=username, passwd=hashed_password)  # Assuming the 'passwd' field stores the hashed password
+    hashed_password = md5_hash(password)  
+    new_user = User(uname=username, passwd=hashed_password)  
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

@@ -28,7 +28,8 @@ app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(batch_router, prefix="", tags=["batch"])
 app.include_router(user_router, prefix="/admin", tags=["users"])
 app.include_router(leads_router, prefix="", tags=["leads"])
-app.include_router(candidate_router, prefix="/candidates", tags=["candidates"])
+app.include_router(candidate_router, prefix="", tags=["candidates"])
+
 
 
 # Root endpoint
