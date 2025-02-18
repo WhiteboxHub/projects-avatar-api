@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List
-from app.models import Candidate  # Ensure Candidate model has __tablename__ = "candidate"
+from app.models import Candidate  
 from app.schemas import CandidateResponse, CandidateCreate, CandidateUpdate
 from app.database.db import get_db
 from app.middleware.admin_validation import admin_validation
@@ -9,15 +9,15 @@ from app.middleware.admin_validation import admin_validation
 router = APIRouter()
 
 
-@router.get("/candidates", response_model=dict)  # No need for response_model
+@router.get("/candidates", response_model=dict)  
 def get_candidates(
     page: int = Query(1, alias="page"),
     pageSize: int = Query(100, alias="pageSize"),
     search: str = Query(None, alias="search"),
     db: Session = Depends(get_db),
-    _: bool = Depends(admin_validation)  # Admin validation
+    _: bool = Depends(admin_validation)  
 ):
-    # print(f"{page}, {pageSize}, {search} -----------------------------------------------")
+    
 
     offset = (page - 1) * pageSize
     query = db.query(Candidate)
@@ -28,7 +28,7 @@ def get_candidates(
     totalRows = query.count()
     candidates = query.order_by(Candidate.candidateid.desc()).offset(offset).limit(pageSize).all()
 
-    # Converting  list of Candidate objects into a list of dictionaries
+
     candidates_list = [
         {
             "candidateid": c.candidateid,
@@ -55,13 +55,12 @@ def insert_candidate(
     db: Session = Depends(get_db),
     _: bool = Depends(admin_validation)
 ):
-    # Create new candidate and insert into database
+   
     new_candidate = Candidate(**candidate_create.dict())
     db.add(new_candidate)
     db.commit()
     db.refresh(new_candidate)
     return new_candidate
-
 
 
 
@@ -85,6 +84,7 @@ def update_candidate(
     db.refresh(candidate)
     return candidate
 
+
 @router.delete("/candidates/delete/{id}")
 def delete_candidate(
     id: int,
@@ -99,6 +99,7 @@ def delete_candidate(
     db.delete(candidate)
     db.commit()
     return {"message": "Candidate deleted successfully"}
+
 
 @router.get("/candidates/search", response_model=dict)
 def search_candidates(
