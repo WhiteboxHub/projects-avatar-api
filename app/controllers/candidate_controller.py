@@ -1,13 +1,3 @@
-
-
-# # Dependency to get the DB session
-# def get_db():
-#     db = Session(bind=engine)
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from database import get_db

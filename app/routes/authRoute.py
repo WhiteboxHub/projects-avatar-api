@@ -8,28 +8,28 @@ from datetime import datetime, timedelta
 from app.schemas import LoginRequest
 from sqlalchemy.sql import text
 
-# Load secret key from environment variables
+
 SECRET_KEY = os.getenv("SECRET_KEY", "your_default_secret_key")
 
 router = APIRouter()
 
 @router.post("/login")
 def login(request: LoginRequest, db: Session = Depends(get_db)):
-    # Query to check user credentials from the 'authuser' table
+  
     user = db.execute(text("SELECT * FROM whiteboxqa.authuser WHERE uname = :username"), {"username": request.username}).fetchone()
     
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
     
-    # Hash the plaintext password and compare with the hashed password in the database
+   
     if hash_password(request.password) != user.passwd:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
 
-    # Generate JWT token for the authenticated user
+   
     token_data = {"id": user.id, "username": user.uname, "exp": datetime.utcnow() + timedelta(hours=1)}
     token = jwt.encode(token_data, SECRET_KEY, algorithm="HS256")
     
-    # Return message and token based on the user role
+    
     if user.team == 'admin':
         return {"token": token, "token_type": "bearer", "message": f"Welcome admin, {user.uname}"}
     else:
