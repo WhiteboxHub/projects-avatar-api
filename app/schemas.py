@@ -233,6 +233,7 @@ class CandidateUpdate(CandidateBase):
 
 class CandidateResponse(CandidateBase):
     candidateid: int
+    lastmoddatetime: datetime
     pass
 
     class Config:

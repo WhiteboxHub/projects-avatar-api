@@ -1,10 +1,15 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List
+from datetime import datetime
 from app.models import Candidate  
 from app.schemas import CandidateResponse, CandidateCreate, CandidateUpdate
 from app.database.db import get_db
 from app.middleware.admin_validation import admin_validation
+from fastapi.responses import Response
+from fastapi import status
+
+
 
 router = APIRouter()
 
@@ -54,8 +59,10 @@ def insert_candidate(
     candidate_create: CandidateCreate,
     db: Session = Depends(get_db),
     _: bool = Depends(admin_validation)
-):
-   
+): 
+    if  len(candidate_create.lastmoddatetime)<2:
+        candidate_create.lastmoddatetime = str(datetime.utcnow())
+
     new_candidate = Candidate(**candidate_create.dict())
     db.add(new_candidate)
     db.commit()
@@ -82,12 +89,12 @@ def update_candidate(
     
     db.commit()
     db.refresh(candidate)
-    return candidate
+    return candidate        
 
 
-@router.delete("/candidates/delete/{id}")
-def delete_candidate(
-    id: int,
+@router.delete("/candidates/delete/{id}", response_model=CandidateResponse)
+async def delete_candidate(
+    id: str,
     db: Session = Depends(get_db),
     _: bool = Depends(admin_validation)
 ):
@@ -98,20 +105,6 @@ def delete_candidate(
     
     db.delete(candidate)
     db.commit()
-    return {"message": "Candidate deleted successfully"}
+    return Response(status_code=status.HTTP_204_NO_CONTENT) 
 
-@router.get("/candidates/search", response_model=dict)
-def search_candidates(
-    search: str = Query(None, alias="search"),
-    page: int = Query(1, alias="page"),
-    pageSize: int = Query(10, alias="pageSize"),
-    db: Session = Depends(get_db),
-    _: bool = Depends(admin_validation)
-):
-    offset = (page - 1) * pageSize
-    query = db.query(Candidate).filter(Candidate.name.ilike(f"%{search}%"))
-    
-    totalRows = query.count()
-    candidates = query.offset(offset).limit(pageSize).all()
-    
-    return {"data": candidates, "totalRows": totalRows}
+   
