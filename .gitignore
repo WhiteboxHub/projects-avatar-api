@@ -1,8 +1,10 @@
 .env
+
 */__pycache__/
 *.py[cod]
 /Myvenv
 
 __pycache__/
-*.py[cod]
 *.pyc
+
+

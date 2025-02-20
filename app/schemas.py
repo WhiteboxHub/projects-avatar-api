@@ -139,6 +139,8 @@ class UserResponse(BaseModel):
 
 
 
+
+
 class CandidateBase(BaseModel):
     name: Optional[str] = None
     enrolleddate: Optional[date] = None
