@@ -100,7 +100,6 @@ def delete_candidate(
     db.commit()
     return {"message": "Candidate deleted successfully"}
 
-
 @router.get("/candidates/search", response_model=dict)
 def search_candidates(
     search: str = Query(None, alias="search"),

@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float, MetaData, Date, Boolean, Text, ForeignKey, DECIMAL
-
+from sqlalchemy import Column, Integer, String, DateTime, DECIMAL , Float, MetaData, Date, Boolean, Text, ForeignKey, TIMESTAMP, CHAR
+# from decimal import Decimal
 from app.database.db import Base
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import declarative_base, relationship
@@ -31,8 +31,6 @@ class User(BaseModel):
     passwd: str
     team: str
     email: str
-
-from sqlalchemy import Column, Integer, String, Date, Text, TIMESTAMP, CHAR, ForeignKey
 
 
 class Batch(Base):
@@ -79,41 +77,26 @@ class Lead(Base):
     country = Column(String)
    
 
-# class Candidate(Base):
-#     __tablename__ = "candidates"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     batchid = Column(Integer, nullable=True)
-#     name = Column(String, nullable=False)
-#     email = Column(String, unique=True, index=True)
-#     phone = Column(String)
-#     diceflag = Column(Boolean, nullable=True)
-
 class Candidate(Base):
-    __tablename__ = "candidate"  # Explicitly match MySQL table name
+    __tablename__ = 'candidate'
 
     candidateid = Column(Integer, primary_key=True, autoincrement=True)
-    batchid = Column(Integer, nullable=True)
     name = Column(String(100))
     enrolleddate = Column(Date)
     email = Column(String(100), unique=True)
-    course = Column(String(50), default="QA", nullable=False)
+    course = Column(String(50), nullable=False, default='QA')
     phone = Column(String(100))
     status = Column(String(100))
     workstatus = Column(String(100))
     education = Column(String(100))
     workexperience = Column(String(100))
-    portalid = Column(String, nullable=False)
     ssn = Column(String(45))
-    agreement = Column(CHAR(1), default="N")
-    promissory = Column(CHAR(1), default="N")
-    driverslicense = Column(CHAR(1), default="N")
-    workpermit = Column(CHAR(1), default="N")
+    agreement = Column(CHAR(1), default='N')
+    promissory = Column(CHAR(1), default='N')
+    driverslicense = Column(CHAR(1), default='N')
+    workpermit = Column(CHAR(1), default='N')
     wpexpirationdate = Column(Date)
-    offerletter = Column(CHAR(1), default="N")
-    offerletterurl = Column(String, nullable=True)
-    referralid = Column(Integer, nullable=True) 
-    originalresume = Column(String, nullable=True)
+    offerletter = Column(CHAR(1), default='N')
     secondaryemail = Column(String(100))
     secondaryphone = Column(String(45))
     address = Column(String(100))
@@ -122,30 +105,47 @@ class Candidate(Base):
     country = Column(String(100))
     zip = Column(String(100))
     linkedin = Column(CHAR(1))
-    diceflag = Column(Boolean, nullable=True)
     dob = Column(Date)
     emergcontactname = Column(String(100))
     emergcontactemail = Column(String(100))
     emergcontactphone = Column(String(100))
     emergcontactaddrs = Column(String(100))
-    guidelines = Column(CHAR(1), default="N")
-    ssnvalidated = Column(CHAR(1), default="N")
-    bgv = Column(CHAR(1), default="N")
+    guidelines = Column(CHAR(1), default='N')
+    ssnvalidated = Column(CHAR(1), default='N')
+    bgv = Column(CHAR(1), default='N')
     term = Column(String(45))
-    feepaid = Column(DECIMAL(10, 2))
-    feedue = Column(DECIMAL(10, 2))
+    feepaid = Column(DECIMAL(10,2))
+    feedue = Column(DECIMAL(10,2))
     salary0 = Column(String(100))
     salary6 = Column(String(100))
     salary12 = Column(String(100))
+    guarantorname = Column(String(300))
+    guarantordesignation = Column(String(300))
+    guarantorcompany = Column(String(300))
+    contracturl = Column(String(250))
+    empagreementurl = Column(String(250))
+    offerletterurl = Column(String(250))
+    dlurl = Column(String(250))
+    workpermiturl = Column(String(250))
+    ssnurl = Column(String(250))
+    referralid = Column(Integer)
+    portalid = Column(Integer)
+    avatarid = Column(Integer)
     notes = Column(Text)
     batchname = Column(String(100), nullable=False)
     coverletter = Column(Text)
     background = Column(Text)
     recruiterassesment = Column(Text)
     instructorassesment = Column(Text)
-    processflag = Column(CHAR(1), default="N")
-    defaultprocessflag = Column(CHAR(1), default="N")
-    lastmoddatetime = Column(TIMESTAMP, nullable=False, server_default="0000-00-00 00:00:00")
+    processflag = Column(CHAR(1), nullable=False, default='N')
+    defaultprocessflag = Column(CHAR(1), nullable=False, default='N')
+    originalresume = Column(String(300))
+    lastmoddatetime = Column(TIMESTAMP, nullable=False, default='0000-00-00 00:00:00')
+    statuschangedate = Column(Date)
+    diceflag = Column(CHAR(1), default='N', comment="This flag is set to 'Y' if it's a dice candidate, otherwise 'N'")
+    batchid = Column(Integer, nullable=False)
+    emaillist = Column(CHAR(1), default='Y')
+
 
 class CandidateMarketing(Base):
     __tablename__ = "candidatemarketing"
