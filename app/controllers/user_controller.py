@@ -5,10 +5,10 @@ from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from app.models import User
-from app.database.db import get_db  # Ensure this is the correct path to your DB session
-import hashlib  # For MD5 password verification
+from app.database.db import get_db  
+import hashlib  
 
-# Load environment variables
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = "HS256"
 
@@ -37,24 +37,21 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     uname = request.uname
     passwd = request.passwd
 
-    # Query the user
     user = get_user_by_uname(db, uname)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    # Verify password
     if not verify_password(user.passwd, passwd):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
-    # Check if the user is an admin
+    
     if user.team != "admin":
         raise HTTPException(status_code=403, detail="Unauthorized team")
 
-    # Create JWT token
     token_payload = {
         "id": user.id,
         "username": user.uname,
-        "exp": datetime.utcnow() + timedelta(hours=1)  # Token expiration
+        "exp": datetime.utcnow() + timedelta(hours=1)  
     }
     token = jwt.encode(token_payload, SECRET_KEY, algorithm=ALGORITHM)
 
