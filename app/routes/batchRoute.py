@@ -37,10 +37,12 @@ def create_batch(batch: dict, db: Session = Depends(get_db)):
     new_batch = insert_batch(db=db, batch=batch)
     return {"id": new_batch.batchid, "batchname": new_batch.batchname}
 
+
 @router.put("/batches/update/{batch_id}")
 def update_existing_batch(batch_id: int, batch: dict, db: Session = Depends(get_db)):
     updated_batch = update_batch(db=db, batch_id=batch_id, updated_batch=batch)
     return {"batchid": updated_batch.batchid, "batchname": updated_batch.batchname}
+
 
 @router.delete("/batches/delete/{batch_id}")
 def delete_existing_batch(batch_id: int, db: Session = Depends(get_db)):

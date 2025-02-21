@@ -35,6 +35,7 @@ app.include_router(candidate_search_router, prefix="/candidate_search", tags=["c
 app.include_router(po_router,tags=["po"])
 
 
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Avatar"}

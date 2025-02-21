@@ -16,7 +16,7 @@ ALGORITHM = "HS256"
 
 def verify_token(token: str = Depends(oauth2_scheme)) -> User:
     try:
-        
+
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user = User(username=payload.get("username"), email=payload.get("email"))
         if user.username is None or user.email is None:

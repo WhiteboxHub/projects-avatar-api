@@ -8,6 +8,7 @@ from app.models import User
 from app.database.db import get_db  
 import hashlib  
 
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = "HS256"
 
@@ -43,6 +44,7 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     if not verify_password(user.passwd, passwd):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
+    
     if user.team != "admin":
         raise HTTPException(status_code=403, detail="Unauthorized team")
 

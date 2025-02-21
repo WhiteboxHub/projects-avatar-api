@@ -8,13 +8,15 @@ from datetime import datetime, timedelta
 from app.schemas import LoginRequest
 from sqlalchemy.sql import text
 
+
+
 SECRET_KEY = os.getenv("SECRET_KEY", "your_default_secret_key")
 
 router = APIRouter()
 
-
 @router.post("/login")
 def login(request: LoginRequest, db: Session = Depends(get_db)):
+  
     user = db.execute(text("SELECT * FROM whiteboxqa.authuser WHERE uname = :username"), {"username": request.username}).fetchone()
     
     if not user:
@@ -26,7 +28,12 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     token = jwt.encode(token_data, SECRET_KEY, algorithm="HS256")
     print(token)
 
+    
     if user.team == 'admin':
-        return {"token": token, "token_type": "bearer", "message": "Welcome admin"}
+        return {"token": token, "token_type": "bearer", "message": f"Welcome admin, {user.uname}"}
     else:
-        return {"token": token, "token_type": "bearer", "user_details": user._mapping, "message": "Welcome User"}
+        return {"token": token, "token_type": "bearer", "user_details": dict(user), "message": f"Welcome user, {user.uname}"}
+
+def hash_password(password: str) -> str:
+    import hashlib
+    return hashlib.md5(password.encode('utf-8')).hexdigest()

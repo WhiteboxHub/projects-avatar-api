@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models import Batch  
 
+
 def get_batches(db: Session, search_query: str = "", skip: int = 0, limit: int = 100):
     if search_query:
         return db.query(Batch).filter(Batch.batchname.like(f"%{search_query}%")).offset(skip).limit(limit).all()
@@ -26,6 +27,7 @@ def update_batch(db: Session, batch_id: int, updated_batch: dict):
     db.commit()
     db.refresh(batch)
     return batch
+
 
 def delete_batch(db: Session, batch_id: int):
     batch = db.query(Batch).filter(Batch.batchid == batch_id).first()
