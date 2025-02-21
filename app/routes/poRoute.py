@@ -1,113 +1,34 @@
-# from fastapi import APIRouter, Depends, Query, HTTPException
-# from sqlalchemy.orm import Session
-# from app.database.db import get_db
-# from app.controllers.po_controller import (
-#     get_po_list, get_po_by_id, create_po, update_po, delete_po
-# )
-# from app.schemas import POCreate, POResponse, POListResponse
-
-# router = APIRouter()
-
-# # # ✅ GET all POs (with pagination & search)
-# # @router.get("/", response_model=POListResponse)
-# # def get_po(
-# #     page: int = Query(1, alias="page", description="Page number"),
-# #     limit: int = Query(10, alias="limit", description="Number of items per page"),
-# #     search: str = Query(None, alias="search", description="Search term"),
-# #     db: Session = Depends(get_db)
-# # ):
-# #     return get_po_list(db, page, limit, search)
-
-
-# @router.get("/", response_model=POListResponse)
-# def get_po(
-#     page: int = Query(1, alias="page", description="Page number"),
-#     limit: int = Query(10, alias="limit", description="Number of items per page"),
-#     search: str = Query(None, alias="search", description="Search term"),
-#     db: Session = Depends(get_db)
-# ):
-#     return get_po_list(db, page, limit, search)
-
-# # ✅ GET a single PO by ID
-# @router.get("/{id}", response_model=POResponse)
-# def get_po_by_id_route(id: int, db: Session = Depends(get_db)):
-#     po = get_po_by_id(db, id)
-#     if not po:
-#         raise HTTPException(status_code=404, detail="PO not found")
-#     return po
-
-# # ✅ POST (Create a new PO)
-# @router.post("/", response_model=POResponse)
-# def create_po_route(po_data: POCreate, db: Session = Depends(get_db)):
-#     return create_po(db, po_data)
-
-
-
-# # ✅ PUT (Update an existing PO)
-# @router.put("/{id}", response_model=POResponse)
-# def update_po_route(id: int, po_data: POCreate, db: Session = Depends(get_db)):
-#     updated_po = update_po(db, id, po_data)
-#     if not updated_po:
-#         raise HTTPException(status_code=404, detail="PO not found")
-#     return updated_po
-
-# # ✅ DELETE (Remove a PO by ID)
-# @router.delete("/{id}")
-# def delete_po_route(id: int, db: Session = Depends(get_db)):
-#     success = delete_po(db, id)
-#     if not success:
-#         raise HTTPException(status_code=404, detail="PO not found")
-#     return {"message": "PO deleted successfully"}
-
-
-
-
-
-from fastapi import APIRouter, Depends, Query, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database.db import get_db
-from app.controllers.po_controller import (
+from app.controllers.poController import (
     get_po_list, get_po_by_id, create_po, update_po, delete_po
 )
-from app.schemas import POCreate, POResponse, POListResponse
+from app.schemas import POSchema, POCreateSchema, POUpdateSchema
 
 router = APIRouter()
 
-# ✅ GET all POs (with pagination & search)
-@router.get("/", response_model=POListResponse)
-def get_po(
-    page: int = Query(1, alias="page", description="Page number"),
-    limit: int = Query(10, alias="limit", description="Number of items per page"),
-    search: str = Query(None, alias="search", description="Search term"),
-    db: Session = Depends(get_db)
-):
-    return get_po_list(db, page, limit, search)
 
-# ✅ GET a single PO by ID
-@router.get("/{id}", response_model=POResponse)
-def get_po_by_id_route(id: int, db: Session = Depends(get_db)):
-    po = get_po_by_id(db, id)
+@router.get("/po")
+def read_po(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
+    skip = (page - 1) * page_size  
+    return get_po_list(db, skip, page_size)
+
+@router.get("/po/{po_id}")
+def read_po_by_id(po_id: int, db: Session = Depends(get_db)):
+    po = get_po_by_id(db, po_id)
     if not po:
         raise HTTPException(status_code=404, detail="PO not found")
     return po
 
-# ✅ POST (Create a new PO)
-@router.post("/", response_model=POResponse)
-def create_po_route(po_data: POCreate, db: Session = Depends(get_db)):
-    return create_po(db, po_data)
+@router.post("/po")
+def create_po_entry(po: POCreateSchema, db: Session = Depends(get_db)):
+    return create_po(db, po)
 
-# ✅ PUT (Update an existing PO)
-@router.put("/{id}", response_model=POResponse)
-def update_po_route(id: int, po_data: POCreate, db: Session = Depends(get_db)):
-    updated_po = update_po(db, id, po_data)
-    if not updated_po:
-        raise HTTPException(status_code=404, detail="PO not found")
-    return updated_po
+@router.put("/po/{po_id}")
+def update_po_entry(po_id: int, po_data: POUpdateSchema, db: Session = Depends(get_db)):
+    return update_po(db, po_id, po_data)
 
-# ✅ DELETE (Remove a PO by ID)
-@router.delete("/{id}")
-def delete_po_route(id: int, db: Session = Depends(get_db)):
-    success = delete_po(db, id)
-    if not success:
-        raise HTTPException(status_code=404, detail="PO not found")
-    return {"message": "PO deleted successfully"}
+@router.delete("/po/{po_id}")
+def delete_po_entry(po_id: int, db: Session = Depends(get_db)):
+    return delete_po(db, po_id)
