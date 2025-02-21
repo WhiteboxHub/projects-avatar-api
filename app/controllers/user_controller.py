@@ -37,12 +37,10 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     uname = request.uname
     passwd = request.passwd
 
-   
     user = get_user_by_uname(db, uname)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
-   
     if not verify_password(user.passwd, passwd):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
@@ -50,7 +48,6 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     if user.team != "admin":
         raise HTTPException(status_code=403, detail="Unauthorized team")
 
-  
     token_payload = {
         "id": user.id,
         "username": user.uname,

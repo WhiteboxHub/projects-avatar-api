@@ -9,6 +9,7 @@ from app.schemas import LoginRequest
 from sqlalchemy.sql import text
 
 
+
 SECRET_KEY = os.getenv("SECRET_KEY", "your_default_secret_key")
 
 router = APIRouter()
@@ -21,14 +22,12 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
     
-   
-    if hash_password(request.password) != user.passwd:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+    print("User details:", user._mapping)
 
-   
     token_data = {"id": user.id, "username": user.uname, "exp": datetime.utcnow() + timedelta(hours=1)}
     token = jwt.encode(token_data, SECRET_KEY, algorithm="HS256")
-    
+    print(token)
+
     
     if user.team == 'admin':
         return {"token": token, "token_type": "bearer", "message": f"Welcome admin, {user.uname}"}

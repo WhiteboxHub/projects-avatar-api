@@ -8,12 +8,15 @@ from app.models import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+
 SECRET_KEY = "your_secret_key"  
 ALGORITHM = "HS256"  
 
 
+
 def verify_token(token: str = Depends(oauth2_scheme)) -> User:
     try:
+
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user = User(username=payload.get("username"), email=payload.get("email"))
         if user.username is None or user.email is None:

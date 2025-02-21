@@ -44,7 +44,6 @@ def update_existing_batch(batch_id: int, batch: dict, db: Session = Depends(get_
     return {"batchid": updated_batch.batchid, "batchname": updated_batch.batchname}
 
 
-# Route to delete a batch
 @router.delete("/batches/delete/{batch_id}")
 def delete_existing_batch(batch_id: int, db: Session = Depends(get_db)):
     delete_batch(db=db, batch_id=batch_id)
