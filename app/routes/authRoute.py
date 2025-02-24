@@ -38,3 +38,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 def hash_password(password: str) -> str:
     import hashlib
     return hashlib.md5(password.encode('utf-8')).hexdigest()
+
+def hash_password(password: str) -> str:
+    import hashlib
+    return hashlib.md5(password.encode('utf-8')).hexdigest()

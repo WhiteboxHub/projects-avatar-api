@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.database.db import get_db  # Import database session dependency
-from app.models import User, Candidate, Batch  # Import models
+from app.database.db import get_db 
+from app.models import User, Candidate, Batch  
 from datetime import datetime
 from typing import List
 
