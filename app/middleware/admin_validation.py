@@ -5,12 +5,12 @@ from app.database.db import get_db  # Function to get the DB session
 from app.config import settings
 from app.models import User,Candidate  # ORM model for authuser
 
-SECRET_KEY = settings.SECRET_KEY
+SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"  # Token signing algorithm
 
 
 def admin_validation(request: Request, db: Session = Depends(get_db)):
-    auth_header = request.headers.get("Authorization")
+    auth_header = request.headers.get("Authtoken")
     
     if not auth_header:
         raise HTTPException(status_code=401, detail="Token not provided")

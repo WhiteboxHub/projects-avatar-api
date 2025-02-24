@@ -113,7 +113,7 @@ class Placement(Base):
 class Lead(Base):
     __tablename__ = "leads"
 
-    leadid = Column(Integer, primary_key=True, index=True)  # Use 'leadid' instead of 'id'
+    leadid = Column(Integer, primary_key=True, index=True)  
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     phone = Column(String)
