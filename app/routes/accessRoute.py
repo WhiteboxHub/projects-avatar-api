@@ -1,62 +1,37 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.db import get_db
-from app.controllers.access_controller import update_user, delete_user
-from app.middleware.admin_validation import admin_validation
-from app.schemas import UserCreate, UserResponse
-from app.models import User
+from app.controllers.accessController import (
+    get_authuser_list, get_authuser_by_id, create_authuser, update_authuser, delete_authuser
+)
+from app.schemas import AuthUserCreateSchema, AuthUserUpdateSchema
 
-router = APIRouter(prefix="/admin")
+router = APIRouter()
 
-@router.get("/users", dependencies=[Depends(admin_validation)])
-def get_users(
-    db: Session = Depends(get_db),
-    page: int = Query(1, alias="page"),
-    page_size: int = Query(100, alias="pageSize"),
-    search: str = Query(None, alias="search")
-):
-    offset = (page - 1) * page_size
-    
-    query = db.query(User)
-    
-    if search:
-        query = query.filter(User.uname.ilike(f"%{search}%") | User.id.ilike(f"%{search}%"))
-    
-    total_rows = query.count()
-    users = query.order_by(User.id.desc()).offset(offset).limit(page_size).all()
-    
-    return {"data": users, "totalRows": total_rows}
+@router.get("/authuser")
+def read_authuser(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
+    skip = (page - 1) * page_size
+    return get_authuser_list(db, skip, page_size)
 
-@router.post("/users/search", response_model=UserResponse)
-def insert_user(new_user: UserCreate, db: Session = Depends(get_db)):
-    user = User(**new_user.dict())
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+@router.get("/authuser/{authuser_id}")
+def read_authuser_by_id(authuser_id: int, db: Session = Depends(get_db)):
+    authuser = get_authuser_by_id(db, authuser_id)
+    if not authuser:
+        raise HTTPException(status_code=404, detail="AuthUser not found")
+    return authuser
 
-@router.put("/users/update/{id}", dependencies=[Depends(admin_validation)])
-def update_user_route(id: int, user_update: UserCreate, db: Session = Depends(get_db)):
-    return update_user(id, user_update, db)
+@router.post("/authuser")
+def create_authuser_entry(authuser_data: AuthUserCreateSchema, db: Session = Depends(get_db)):
+    return create_authuser(db, authuser_data)
 
-@router.delete("/users/delete/{id}", dependencies=[Depends(admin_validation)])
-def delete_user_route(id: int, db: Session = Depends(get_db)):
-    return delete_user(id, db)
 
-@router.get("/users/search", dependencies=[Depends(admin_validation)])
-def search_users(
-    db: Session = Depends(get_db),
-    search: str = Query(None, alias="search"),
-    page: int = Query(1, alias="page"),
-    page_size: int = Query(10, alias="pageSize")
-):
-    offset = (page - 1) * page_size
-    
-    query = db.query(User)
-    if search:
-        query = query.filter(User.uname.ilike(f"%{search}%"))
-    
-    total_rows = query.count()
-    users = query.order_by(User.id.desc()).offset(offset).limit(page_size).all()
-    
-    return {"data": users, "totalRows": total_rows, "page": page, "pageSize": page_size}
+@router.put("/authuser/{authuser_id}")
+def update_authuser_entry(authuser_id: int, authuser_data: AuthUserUpdateSchema, db: Session = Depends(get_db)):
+    result = update_authuser(db, authuser_id, authuser_data)
+    if "error" in result:
+        raise HTTPException(status_code=404, detail=result["error"])
+    return result
+
+@router.delete("/authuser/{authuser_id}")
+def delete_authuser_entry(authuser_id: int, db: Session = Depends(get_db)):
+    return delete_authuser(db, authuser_id)

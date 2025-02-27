@@ -1,5 +1,5 @@
 # avatar-app/projects-api/app/schemas.py
-from pydantic import BaseModel,constr, conint, EmailStr, Field
+from pydantic import BaseModel,constr, conint, EmailStr, Field,validator
 from datetime import datetime, date
 from typing import Optional, List
 from pydantic_settings import BaseSettings
@@ -353,3 +353,42 @@ class CandidateMarketingSchema(CandidateMarketingBase):
 
     class Config:
         from_attributes = True     
+        
+        
+        
+class AuthUserBase(BaseModel):
+    uname: str=''
+    team: Optional[str] = ''
+    level: Optional[str] = ''
+    instructor: Optional[str] = 'Y'
+    override: Optional[str] = 'N'
+    status: Optional[str] = 'inactive'
+    lastlogin: Optional[datetime] = None
+    logincount: Optional[int] = None
+    fullname: Optional[str] = ''
+    address: Optional[str] = ''
+    phone: Optional[str] = None
+    state: Optional[str] = ''
+    zip: Optional[str] = ''
+    city: Optional[str] = ''
+    country: Optional[str] = ''
+    message: Optional[str] = ''
+    registereddate: Optional[datetime] = None
+    level3date: Optional[datetime] = None
+    demo: Optional[str] = 'N'
+    enddate: Optional[date] = None
+    googleId: Optional[str] = ''
+    reset_token: Optional[str] = None
+    token_expiry: Optional[datetime] = None
+    role: Optional[str] = ''
+
+class AuthUserCreateSchema(AuthUserBase):
+    passwd: str
+class AuthUserUpdateSchema(AuthUserBase):
+    pass
+
+class AuthUserSchema(AuthUserBase):
+    id: int
+
+    class Config:
+        from_attributes = True        
