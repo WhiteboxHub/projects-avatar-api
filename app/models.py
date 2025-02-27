@@ -1,3 +1,4 @@
+# avatar-app/projects-api/app/models.py
 from sqlalchemy.sql import func
 from sqlalchemy import Column, Integer, String, DateTime, DECIMAL , Float, MetaData, Date, Boolean, Text, ForeignKey, TIMESTAMP, CHAR
 from app.database.db import Base
@@ -288,3 +289,35 @@ class PO(Base):
     notes = Column(String, nullable=True)
 
     placement = relationship("Placement", back_populates="po_entries")
+
+
+
+class CandidateMarketing(Base):
+    __tablename__ = "candidatemarketing"
+    __table_args__ = {'extend_existing': True} 
+
+    id = Column(Integer, primary_key=True, index=True)
+    candidateid = Column(Integer, ForeignKey("candidate.candidateid"), nullable=False)
+    startdate = Column(DateTime, nullable=False)
+    mmid = Column(Integer)
+    instructorid = Column(Integer, default=1)
+    status = Column(String(45))
+    submitterid = Column(Integer)
+    priority = Column(String(45), default='P5')
+    technology = Column(String(45), default='QA')
+    minrate = Column(Integer, default=55)
+    currentlocation = Column(String(200))
+    relocation = Column(CHAR(3))
+    locationpreference = Column(String(200))
+    skypeid = Column(String(200))
+    ipemailid = Column(Integer, nullable=False, default=0)
+    resumeid = Column(Integer, nullable=False, default=0)
+    coverletter = Column(Text)
+    intro = Column(Text)
+    closedate = Column(DateTime)
+    closedemail = Column(CHAR(1), default='N')
+    notes = Column(Text)
+    suspensionreason = Column(CHAR(1), default='A')
+    yearsofexperience = Column(CHAR(3))
+    
+    

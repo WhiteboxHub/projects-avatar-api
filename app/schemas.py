@@ -1,3 +1,4 @@
+# avatar-app/projects-api/app/schemas.py
 from pydantic import BaseModel,constr, conint, EmailStr, Field
 from datetime import datetime, date
 from typing import Optional, List
@@ -311,3 +312,44 @@ class POUpdateSchema(BaseModel):
     invoicenet: Optional[float]
     polink: Optional[str]
     notes: Optional[str]
+    
+    
+    
+    
+
+class CandidateMarketingBase(BaseModel):
+    # candidateid: int
+    candidateid: Optional[int] = None
+    # startdate: datetime
+    mmid: Optional[int] = None
+    instructorid: Optional[int] = None
+    status: Optional[str] = None
+    submitterid: Optional[int] = None
+    priority: Optional[str] = None
+    technology: Optional[str] = None
+    minrate: Optional[int] = None
+    currentlocation: Optional[str] = None
+    relocation: Optional[str] = None
+    locationpreference: Optional[str] = None
+    skypeid: Optional[str] = None
+    ipemailid: Optional[int] = None
+    resumeid: Optional[int] = None
+    coverletter: Optional[str] = None
+    intro: Optional[str] = None
+    closedate: Optional[datetime] = None
+    closedemail: Optional[str] = None
+    notes: Optional[str] = None
+    suspensionreason: Optional[str] = None
+    yearsofexperience: Optional[str] = None
+
+class CandidateMarketingCreateSchema(CandidateMarketingBase):
+    pass
+
+class CandidateMarketingUpdateSchema(CandidateMarketingBase):
+    pass
+
+class CandidateMarketingSchema(CandidateMarketingBase):
+    id: int
+
+    class Config:
+        from_attributes = True     

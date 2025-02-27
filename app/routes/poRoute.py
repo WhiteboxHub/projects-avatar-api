@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from app.database.db import get_db
 from app.controllers.poController import (
     get_po_list, get_po_by_id, create_po, update_po, delete_po
@@ -12,8 +13,12 @@ router = APIRouter()
 @router.get("/po")
 def read_po(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
     skip = (page - 1) * page_size  
-    return get_po_list(db, skip, page_size)
-
+    po_list = get_po_list(db, skip, page_size)
+    total_rows = db.execute(text("SELECT COUNT(*) FROM po")).scalar()
+    # return get_po_list(db, skip, page_size)
+    
+    # Return both the list of POs and the total count
+    return {"data": po_list, "totalRows": total_rows}
 @router.get("/po/{po_id}")
 def read_po_by_id(po_id: int, db: Session = Depends(get_db)):
     po = get_po_by_id(db, po_id)
