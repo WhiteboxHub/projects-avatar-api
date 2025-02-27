@@ -60,7 +60,7 @@ class Placement(Base):
     __tablename__ = 'placement'
 
 
-    placementid = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     candidateid = Column(Integer)
     placementDate = Column(DateTime)
 
