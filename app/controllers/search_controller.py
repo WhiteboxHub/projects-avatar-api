@@ -20,7 +20,7 @@ def get_db():
 def search_candidates_by_name(name: str, db: Session = Depends(get_db)):
     query = text("""
         SELECT * 
-        FROM whiteboxqa.candidate
+        FROM wbl_db.candidate
         WHERE name LIKE :name;
     """)
     

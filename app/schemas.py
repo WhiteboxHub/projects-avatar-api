@@ -1,4 +1,5 @@
-from pydantic import BaseModel,constr, conint, EmailStr, Field
+# avatar-app/projects-api/app/schemas.py
+from pydantic import BaseModel,constr, conint, EmailStr, Field,validator
 from datetime import datetime, date
 from typing import Optional, List
 from pydantic_settings import BaseSettings
@@ -311,3 +312,83 @@ class POUpdateSchema(BaseModel):
     invoicenet: Optional[float]
     polink: Optional[str]
     notes: Optional[str]
+    
+    
+    
+    
+
+class CandidateMarketingBase(BaseModel):
+    # candidateid: int
+    candidateid: Optional[int] = None
+    # startdate: datetime
+    mmid: Optional[int] = None
+    instructorid: Optional[int] = None
+    status: Optional[str] = None
+    submitterid: Optional[int] = None
+    priority: Optional[str] = None
+    technology: Optional[str] = None
+    minrate: Optional[int] = None
+    currentlocation: Optional[str] = None
+    relocation: Optional[str] = None
+    locationpreference: Optional[str] = None
+    skypeid: Optional[str] = None
+    ipemailid: Optional[int] = None
+    resumeid: Optional[int] = None
+    coverletter: Optional[str] = None
+    intro: Optional[str] = None
+    closedate: Optional[datetime] = None
+    closedemail: Optional[str] = None
+    notes: Optional[str] = None
+    suspensionreason: Optional[str] = None
+    yearsofexperience: Optional[str] = None
+
+class CandidateMarketingCreateSchema(CandidateMarketingBase):
+    pass
+
+class CandidateMarketingUpdateSchema(CandidateMarketingBase):
+    pass
+
+class CandidateMarketingSchema(CandidateMarketingBase):
+    id: int
+
+    class Config:
+        from_attributes = True     
+        
+        
+        
+class AuthUserBase(BaseModel):
+    uname: str=''
+    team: Optional[str] = ''
+    level: Optional[str] = ''
+    instructor: Optional[str] = 'Y'
+    override: Optional[str] = 'N'
+    status: Optional[str] = 'inactive'
+    lastlogin: Optional[datetime] = None
+    logincount: Optional[int] = None
+    fullname: Optional[str] = ''
+    address: Optional[str] = ''
+    phone: Optional[str] = None
+    state: Optional[str] = ''
+    zip: Optional[str] = ''
+    city: Optional[str] = ''
+    country: Optional[str] = ''
+    message: Optional[str] = ''
+    registereddate: Optional[datetime] = None
+    level3date: Optional[datetime] = None
+    demo: Optional[str] = 'N'
+    enddate: Optional[date] = None
+    googleId: Optional[str] = ''
+    reset_token: Optional[str] = None
+    token_expiry: Optional[datetime] = None
+    role: Optional[str] = ''
+
+class AuthUserCreateSchema(AuthUserBase):
+    passwd: str
+class AuthUserUpdateSchema(AuthUserBase):
+    pass
+
+class AuthUserSchema(AuthUserBase):
+    id: int
+
+    class Config:
+        from_attributes = True        
