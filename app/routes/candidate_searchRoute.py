@@ -10,3 +10,4 @@ router = APIRouter()
 def search_candidates_route(search_params: CandidateSearchBase, db: Session = Depends(get_db)):
     results = search_candidates_by_name(db=db, search_params=search_params)
     return results
+

@@ -1,3 +1,4 @@
+# avatar-app/projects-api/app/models.py
 from sqlalchemy.sql import func
 from sqlalchemy import Column, Integer, String, DateTime, DECIMAL , Float, MetaData, Date, Boolean, Text, ForeignKey, TIMESTAMP, CHAR
 from app.database.db import Base
@@ -59,7 +60,7 @@ class Placement(Base):
     __tablename__ = 'placement'
 
 
-    placementid = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     candidateid = Column(Integer)
     placementDate = Column(DateTime)
 
@@ -288,3 +289,66 @@ class PO(Base):
     notes = Column(String, nullable=True)
 
     placement = relationship("Placement", back_populates="po_entries")
+
+
+
+class CandidateMarketing(Base):
+    __tablename__ = "candidatemarketing"
+    __table_args__ = {'extend_existing': True} 
+
+    id = Column(Integer, primary_key=True, index=True)
+    candidateid = Column(Integer, ForeignKey("candidate.candidateid"), nullable=False)
+    startdate = Column(DateTime, nullable=False)
+    mmid = Column(Integer)
+    instructorid = Column(Integer, default=1)
+    status = Column(String(45))
+    submitterid = Column(Integer)
+    priority = Column(String(45), default='P5')
+    technology = Column(String(45), default='QA')
+    minrate = Column(Integer, default=55)
+    currentlocation = Column(String(200))
+    relocation = Column(CHAR(3))
+    locationpreference = Column(String(200))
+    skypeid = Column(String(200))
+    ipemailid = Column(Integer, nullable=False, default=0)
+    resumeid = Column(Integer, nullable=False, default=0)
+    coverletter = Column(Text)
+    intro = Column(Text)
+    closedate = Column(DateTime)
+    closedemail = Column(CHAR(1), default='N')
+    notes = Column(Text)
+    suspensionreason = Column(CHAR(1), default='A')
+    yearsofexperience = Column(CHAR(3))
+    
+    
+class AuthUser(Base):
+    __tablename__ = "authuser"
+
+    id = Column(Integer, primary_key=True, index=True)
+    uname = Column(String(50), nullable=False, default='')
+    passwd = Column(String(32), nullable=False)
+    dailypwd = Column(String(255), nullable=True)
+    team = Column(String(255), nullable=True)
+    level = Column(String(255), nullable=True)
+    instructor = Column(CHAR(1), nullable=True)
+    override = Column(CHAR(1), nullable=True)
+    status = Column(String(255), nullable=True)
+    lastlogin = Column(DateTime, nullable=True)
+    logincount = Column(Integer, nullable=True)
+    fullname = Column(String(50), nullable=True)
+    address = Column(String(50), nullable=True)
+    phone = Column(String(20), nullable=True)
+    state = Column(String(45), nullable=True)
+    zip = Column(String(45), nullable=True)
+    city = Column(String(45), nullable=True)
+    country = Column(String(45), nullable=True)
+    message = Column(Text, nullable=True)
+    registereddate = Column(DateTime, nullable=True)
+    level3date = Column(DateTime, nullable=True)
+    lastmoddatetime = Column(TIMESTAMP, nullable=False, default=datetime.utcnow)
+    demo = Column(CHAR(1), nullable=False, default='N')
+    enddate = Column(Date, nullable=False, default='1990-01-01')
+    googleId = Column(String(255), nullable=True)
+    reset_token = Column(String(255), nullable=True)
+    token_expiry = Column(DateTime, nullable=True)
+    role = Column(String(100), nullable=True)    
