@@ -8,6 +8,7 @@ from typing import ClassVar, Optional
 from pydantic_settings import BaseSettings
 from datetime import datetime, date
 from sqlalchemy.orm import DeclarativeBase
+from app.models import Base
 
 Base = declarative_base()
 
@@ -352,3 +353,30 @@ class AuthUser(Base):
     reset_token = Column(String(255), nullable=True)
     token_expiry = Column(DateTime, nullable=True)
     role = Column(String(100), nullable=True)    
+    
+class CurrentMarketing(Base):
+    __tablename__ = "currentmarketing"
+    # __table_args__ = {'extend_existing': True} 
+    id = Column(Integer, primary_key=True, index=True)
+    candidateid = Column(Integer, ForeignKey("candidate.candidateid"), nullable=False)
+    startdate = Column(DateTime, nullable=False)
+    mmid = Column(Integer)
+    instructorid = Column(Integer, default=1)
+    status = Column(String(45))
+    submitterid = Column(Integer)
+    priority = Column(String(45), default='P5')
+    technology = Column(String(45), default='QA')
+    minrate = Column(Integer, default=55)
+    currentlocation = Column(String(200))
+    relocation = Column(CHAR(3))
+    locationpreference = Column(String(200))
+    skypeid = Column(String(200))
+    ipemailid = Column(Integer, nullable=False, default=0)
+    resumeid = Column(Integer, nullable=False, default=0)
+    coverletter = Column(Text)
+    intro = Column(Text)
+    closedate = Column(DateTime)
+    closedemail = Column(CHAR(1), default='N')
+    notes = Column(Text)
+    suspensionreason = Column(CHAR(1), default='A')
+    yearsofexperience = Column(CHAR(3))    

@@ -392,3 +392,47 @@ class AuthUserSchema(AuthUserBase):
 
     class Config:
         from_attributes = True        
+        
+        
+        
+        
+# app/schemas.py
+
+class CurrentMarketingBase(BaseModel):
+    candidateid: Optional[int] = None
+    # mmid: Optional[int] = None
+    instructorid: Optional[int] = None
+    status: Optional[str] = None
+    submitterid: Optional[int] = None
+    priority: Optional[str] = None
+    technology: Optional[str] = None
+    minrate: Optional[int] = None
+    currentlocation: Optional[str] = None
+    relocation: Optional[str] = ''
+    locationpreference: Optional[str] = None
+    # skypeid: Optional[str] = None
+    ipemailid: Optional[int] = None
+    resumeid: Optional[int] = None
+    coverletter: Optional[str] = None
+    intro: Optional[str] = None
+    closedate: Optional[datetime] = None
+    closedemail: Optional[str] = 'N'
+    notes: Optional[str] = None
+    suspensionreason: Optional[str] = 'N'
+    yearsofexperience: Optional[str] = None
+
+class CurrentMarketingCreateSchema(CurrentMarketingBase):
+    pass
+
+class CurrentMarketingUpdateSchema(CurrentMarketingBase):
+    pass
+    class Config:
+        orm_mode = True
+
+class CurrentMarketingSchema(CurrentMarketingBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+        
+    
