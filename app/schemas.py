@@ -436,3 +436,19 @@ class CurrentMarketingSchema(CurrentMarketingBase):
         from_attributes = True
         
     
+    
+
+class OverdueUpdateSchema(BaseModel):
+    invoicenumber: Optional[str]
+    invoicedate: Optional[date]
+    quantity: Optional[int]
+    amountreceived: Optional[float]
+    receiveddate: Optional[date]
+    releaseddate: Optional[date]
+    checknumber: Optional[str]
+    invoiceurl: Optional[str]
+    checkurl: Optional[str]
+    notes: Optional[str]
+    status: Optional[str]
+    remindertype: Optional[str]    
+    
