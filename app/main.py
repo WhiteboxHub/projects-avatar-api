@@ -2,36 +2,42 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.db import engine, Base
 from app.routes.batchRoute import router as batch_router
+from app.routes.accessRoute import router as access_router
 from app.routes.authRoute import router as auth_router
 from app.routes.accessRoute import router as user_router
-
 from app.routes.leadsRoute import router as leads_router
 from app.routes.candidateRoute import router as candidate_router
+from app.routes.candidate_searchRoute import router as candidate_search_router
+from app.routes.poRoute import router as po_router  
+from app.routes.candidateMarketingRoute import router as candidate_marketing_router  
+from app.routes.currentMarketingRoute import router as current_marketing_router  # Import the new router
 
-
-# Initialize FastAPI app
 app = FastAPI()
+
+origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change to your frontend URL for security
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"], 
+    allow_headers=["*"],  
 )
 
-# Create all database tables if they don't exist
 Base.metadata.create_all(bind=engine)
 
-# Include routes with proper prefixes and tags
+
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
-app.include_router(batch_router, prefix="", tags=["batch"])
+app.include_router(access_router, prefix="/access", tags=["access"])
+app.include_router(batch_router, prefix="/batch", tags=["batch"]) 
 app.include_router(user_router, prefix="/admin", tags=["users"])
-app.include_router(leads_router, prefix="", tags=["leads"])
+app.include_router(leads_router, prefix="/leads", tags=["leads"])  
 app.include_router(candidate_router, prefix="/candidates", tags=["candidates"])
+app.include_router(candidate_search_router, prefix="/candidate_search", tags=["candidate_search"])
+app.include_router(po_router,tags=["po"])
+app.include_router(candidate_marketing_router, tags=["candidate_Marketing"])  
+app.include_router(current_marketing_router, tags=["current_Marketing"])  # Include the new router
 
-
-# Root endpoint
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Avatar"}
