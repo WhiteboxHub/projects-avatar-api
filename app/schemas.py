@@ -396,7 +396,7 @@ class AuthUserSchema(AuthUserBase):
         
         
         
-# app/schemas.py
+
 
 class CurrentMarketingBase(BaseModel):
     candidateid: Optional[int] = None

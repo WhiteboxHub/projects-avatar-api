@@ -1,3 +1,5 @@
+# avatar/projects-avatar-api/app/main.py
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.db import engine, Base
@@ -28,18 +30,17 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 
 
-app.include_router(auth_router, prefix="/auth", tags=["auth"])
-app.include_router(access_router, prefix="/access", tags=["access"])
-app.include_router(batch_router, prefix="/batch", tags=["batch"]) 
-app.include_router(user_router, prefix="/admin", tags=["users"])
-app.include_router(leads_router, prefix="/leads", tags=["leads"])  
-app.include_router(candidate_router, prefix="/candidates", tags=["candidates"])
-app.include_router(candidate_search_router, prefix="/candidate_search", tags=["candidate_search"])
+app.include_router(auth_router, prefix="/api/admin/auth", tags=["auth"])
+app.include_router(access_router, prefix="/api/admin/access", tags=["access"])
+app.include_router(batch_router, prefix="/api/admin/batch", tags=["batch"]) 
+app.include_router(user_router, prefix="/api/admin/admin", tags=["users"])
+app.include_router(leads_router, prefix="/api/admin/leads/search", tags=["leads"])  
+app.include_router(candidate_router, prefix="/api/admin/candidates", tags=["candidates"])
+app.include_router(candidate_search_router,tags=["search"])
 app.include_router(po_router,tags=["po"])
-app.include_router(candidate_marketing_router, tags=["candidate_Marketing"])  
-app.include_router(current_marketing_router, tags=["current_Marketing"])  # Include the new router
-app.include_router(overdue_router, tags=["overdue"])  # Include the new router
-
+app.include_router(candidate_marketing_router, tags=["candidatemarketing"])  
+app.include_router(current_marketing_router, tags=["currentmarketing"])  
+app.include_router(overdue_router, tags=["overdue"])  
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Avatar"}

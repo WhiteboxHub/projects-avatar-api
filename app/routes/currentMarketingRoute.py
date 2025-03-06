@@ -12,19 +12,19 @@ from app.schemas import CurrentMarketingSchema, CurrentMarketingCreateSchema, Cu
 
 router = APIRouter()
 
-@router.get("/currentmarketing")
+@router.get("/api/admin/currentmarketing")
 def read_current_marketing(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
     skip = (page - 1) * page_size
     return get_current_marketing_list(db, skip, page_size)
 
-@router.get("/currentmarketing/{current_marketing_id}")
+@router.get("/api/admin/currentmarketing/{current_marketing_id}")
 def read_current_marketing_by_id(current_marketing_id: int, db: Session = Depends(get_db)):
     current_marketing = get_current_marketing_by_id(db, current_marketing_id)
     if not current_marketing:
         raise HTTPException(status_code=404, detail="Current Marketing not found")
     return current_marketing
 
-@router.put("/currentmarketing/{current_marketing_id}")
+@router.put("/api/admin/currentmarketing/{current_marketing_id}")
 def update_current_marketing_entry(current_marketing_id: int, current_marketing_data: CurrentMarketingUpdateSchema, db: Session = Depends(get_db)):
     return update_current_marketing(db, current_marketing_id, current_marketing_data)
 

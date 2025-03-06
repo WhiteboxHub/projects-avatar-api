@@ -10,30 +10,28 @@ from app.schemas import POSchema, POCreateSchema, POUpdateSchema
 router = APIRouter()
 
 
-@router.get("/po")
+@router.get("/api/admin/po")
 def read_po(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
     skip = (page - 1) * page_size  
     po_list = get_po_list(db, skip, page_size)
     total_rows = db.execute(text("SELECT COUNT(*) FROM po")).scalar()
-    # return get_po_list(db, skip, page_size)
-    
-    # Return both the list of POs and the total count
+
     return {"data": po_list, "totalRows": total_rows}
-@router.get("/po/{po_id}")
+@router.get("/api/admin/po/{po_id}")
 def read_po_by_id(po_id: int, db: Session = Depends(get_db)):
     po = get_po_by_id(db, po_id)
     if not po:
         raise HTTPException(status_code=404, detail="PO not found")
     return po
 
-@router.post("/po")
+@router.post("/api/admin/po")
 def create_po_entry(po: POCreateSchema, db: Session = Depends(get_db)):
     return create_po(db, po)
 
-@router.put("/po/{po_id}")
+@router.put("/api/admin/po/{po_id}")
 def update_po_entry(po_id: int, po_data: POUpdateSchema, db: Session = Depends(get_db)):
     return update_po(db, po_id, po_data)
 
-@router.delete("/po/{po_id}")
+@router.delete("/api/admin/po/{po_id}")
 def delete_po_entry(po_id: int, db: Session = Depends(get_db)):
     return delete_po(db, po_id)

@@ -1,3 +1,4 @@
+# avatar/projects-avatar-api/app/routes/candidateRoute.py
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List

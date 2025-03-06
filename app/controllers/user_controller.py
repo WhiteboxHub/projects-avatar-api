@@ -1,3 +1,5 @@
+# avatar/projects-avatar-api/app/controllers/user_controller.py
+
 import os
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends

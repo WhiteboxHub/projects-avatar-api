@@ -1,3 +1,4 @@
+# avatar/projects-avatar-api/app/controllers/accessController.py
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 from app.models import AuthUser

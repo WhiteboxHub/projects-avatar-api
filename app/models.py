@@ -426,5 +426,3 @@ class Overdue(Base):
     recruiterphone = Column(String, nullable=True)
     recruiteremail = Column(String, nullable=True)
     notes = Column(String, nullable=True)    
-
-
